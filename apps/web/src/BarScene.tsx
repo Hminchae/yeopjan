@@ -9,12 +9,12 @@ interface Props {
 }
 
 const avatarColors: Record<AvatarStyle, number> = {
-  amber: 0xd99a4c,
-  burgundy: 0x934b55,
-  navy: 0x536b88,
-  sage: 0x73816b,
-  plum: 0x76566f,
-  copper: 0xa96843
+  amber: 0xffc66d,
+  burgundy: 0xe86f7a,
+  navy: 0x397b92,
+  sage: 0x69c6ac,
+  plum: 0xa76a91,
+  copper: 0xef8b68
 };
 
 const normalizedToWorld = (x: number, y: number) => new THREE.Vector3((x - 50) * 0.24, 0, (y - 54) * 0.18);
@@ -24,7 +24,7 @@ const worldToNormalized = (point: THREE.Vector3) => ({
 });
 
 function material(color: number, roughness = 0.76, metalness = 0.04) {
-  return new THREE.MeshStandardMaterial({ color, roughness, metalness });
+  return new THREE.MeshStandardMaterial({ color, roughness, metalness, flatShading: true });
 }
 
 function mesh(
@@ -44,22 +44,22 @@ function addBottle(group: THREE.Group, x: number, color: number, height: number)
 }
 
 function createBarInterior(scene: THREE.Scene) {
-  scene.add(mesh(new THREE.PlaneGeometry(28, 23), material(0x241b1d, 0.86), [0, 0, 0], [-Math.PI / 2, 0, 0]));
+  scene.add(mesh(new THREE.PlaneGeometry(28, 23), material(0x174f5d, 0.9), [0, 0, 0], [-Math.PI / 2, 0, 0]));
   for (let z = -10; z < 10; z += 1.35) {
-    const seam = mesh(new THREE.BoxGeometry(28, 0.012, 0.025), material(0x4d3530), [0, 0.016, z]);
+    const seam = mesh(new THREE.BoxGeometry(28, 0.012, 0.035), material(0x267182), [0, 0.016, z]);
     seam.receiveShadow = false;
     scene.add(seam);
   }
 
   scene.add(
-    mesh(new THREE.BoxGeometry(28, 9, 0.35), material(0x101726), [0, 4.5, -10]),
-    mesh(new THREE.BoxGeometry(0.35, 9, 22), material(0x131a28), [-14, 4.5, 0]),
-    mesh(new THREE.BoxGeometry(0.35, 9, 22), material(0x131a28), [14, 4.5, 0])
+    mesh(new THREE.BoxGeometry(28, 9, 0.35), material(0xc85f70), [0, 4.5, -10]),
+    mesh(new THREE.BoxGeometry(0.35, 9, 22), material(0x8f4f68), [-14, 4.5, 0]),
+    mesh(new THREE.BoxGeometry(0.35, 9, 22), material(0x8f4f68), [14, 4.5, 0])
   );
 
-  const windowFrame = material(0x3a2927, 0.72);
+  const windowFrame = material(0x174a5a, 0.88);
   scene.add(mesh(new THREE.BoxGeometry(8.3, 5.5, 0.2), windowFrame, [-7.8, 4.6, -9.72]));
-  const rainyGlass = new THREE.MeshStandardMaterial({ color: 0x38516b, roughness: 0.2, metalness: 0.12, transparent: true, opacity: 0.72 });
+  const rainyGlass = new THREE.MeshStandardMaterial({ color: 0x4eb7b4, roughness: 0.42, metalness: 0.02, transparent: true, opacity: 0.68, flatShading: true });
   scene.add(
     mesh(new THREE.BoxGeometry(7.6, 4.8, 0.12), rainyGlass, [-7.8, 4.6, -9.48]),
     mesh(new THREE.BoxGeometry(0.13, 4.8, 0.14), windowFrame, [-7.8, 4.6, -9.34]),
@@ -74,18 +74,18 @@ function createBarInterior(scene: THREE.Scene) {
     rainPositions[index * 3 + 2] = -9.18;
   }
   rainGeometry.setAttribute('position', new THREE.BufferAttribute(rainPositions, 3));
-  const rain = new THREE.Points(rainGeometry, new THREE.PointsMaterial({ color: 0xb5d2e6, size: 0.055, transparent: true, opacity: 0.72 }));
+  const rain = new THREE.Points(rainGeometry, new THREE.PointsMaterial({ color: 0xd8fff0, size: 0.07, transparent: true, opacity: 0.8 }));
   rain.name = 'rain';
   scene.add(rain);
 
   const shelf = new THREE.Group();
   shelf.position.set(5.1, 3.4, -9.3);
   shelf.add(
-    mesh(new THREE.BoxGeometry(9.2, 0.18, 0.8), material(0x805035), [0, -1.2, 0]),
-    mesh(new THREE.BoxGeometry(9.2, 0.18, 0.8), material(0x805035), [0, 0.55, 0]),
-    mesh(new THREE.BoxGeometry(9.2, 0.18, 0.8), material(0x805035), [0, 2.3, 0])
+    mesh(new THREE.BoxGeometry(9.2, 0.18, 0.8), material(0x713f59), [0, -1.2, 0]),
+    mesh(new THREE.BoxGeometry(9.2, 0.18, 0.8), material(0x713f59), [0, 0.55, 0]),
+    mesh(new THREE.BoxGeometry(9.2, 0.18, 0.8), material(0x713f59), [0, 2.3, 0])
   );
-  const bottleColors = [0x6e7b46, 0x8c503d, 0xb78b4b, 0x405c55, 0x74434e];
+  const bottleColors = [0x65c9b7, 0xef7981, 0xffd47b, 0x3c8f97, 0xb96888];
   for (let row = 0; row < 3; row += 1) {
     for (let index = 0; index < 11; index += 1) {
       const bottles = new THREE.Group();
@@ -99,14 +99,14 @@ function createBarInterior(scene: THREE.Scene) {
   const bar = new THREE.Group();
   bar.position.set(1.2, 0, -2.2);
   bar.add(
-    mesh(new THREE.BoxGeometry(17, 1.8, 2.2), material(0x4a2d28), [0, 0.9, 0]),
-    mesh(new THREE.BoxGeometry(17.5, 0.22, 2.65), material(0x8d5937, 0.52), [0, 1.94, 0]),
-    mesh(new THREE.BoxGeometry(16.4, 0.08, 0.08), material(0xc59455, 0.25, 0.7), [0, 1.2, 1.14])
+    mesh(new THREE.BoxGeometry(17, 1.8, 2.2), material(0x793f59), [0, 0.9, 0]),
+    mesh(new THREE.BoxGeometry(17.5, 0.22, 2.65), material(0xf18a7f, 0.7), [0, 1.94, 0]),
+    mesh(new THREE.BoxGeometry(16.4, 0.08, 0.08), material(0xffdf9f, 0.6), [0, 1.2, 1.14])
   );
   scene.add(bar);
 
-  const stoolSurface = material(0x6a3e35);
-  const brass = material(0xa87a43, 0.32, 0.68);
+  const stoolSurface = material(0xd65f70);
+  const brass = material(0xffcc78, 0.7, 0.05);
   for (let index = 0; index < 6; index += 1) {
     const x = -6 + index * 2.65;
     scene.add(
@@ -117,7 +117,7 @@ function createBarInterior(scene: THREE.Scene) {
 
   for (const tableX of [-5.4, 5.7]) {
     scene.add(
-      mesh(new THREE.CylinderGeometry(1.75, 1.75, 0.18, 28), material(0x56372d), [tableX, 1.15, 5.2]),
+      mesh(new THREE.CylinderGeometry(1.75, 1.75, 0.18, 12), material(0x9a5166), [tableX, 1.15, 5.2]),
       mesh(new THREE.CylinderGeometry(0.22, 0.32, 1.2, 14), brass, [tableX, 0.55, 5.2])
     );
     for (const [dx, dz] of [[-1.7, 0], [1.7, 0], [0, -1.6], [0, 1.6]] as const) {
@@ -129,14 +129,14 @@ function createBarInterior(scene: THREE.Scene) {
   }
 
   scene.add(
-    mesh(new THREE.BoxGeometry(5.6, 0.55, 1.2), material(0x56372d), [-8.4, 0.75, -6.8]),
-    mesh(new THREE.BoxGeometry(5.6, 2.1, 0.3), material(0x4c3030), [-8.4, 1.6, -7.3])
+    mesh(new THREE.BoxGeometry(5.6, 0.55, 1.2), material(0x9a5166), [-8.4, 0.75, -6.8]),
+    mesh(new THREE.BoxGeometry(5.6, 2.1, 0.3), material(0x6b435d), [-8.4, 1.6, -7.3])
   );
 
   const door = new THREE.Group();
   door.position.set(10.4, 2.8, -9.65);
   door.add(
-    mesh(new THREE.BoxGeometry(3.2, 5.6, 0.24), material(0x3b2929), [0, 0, 0]),
+    mesh(new THREE.BoxGeometry(3.2, 5.6, 0.24), material(0xe06c78), [0, 0, 0]),
     mesh(new THREE.BoxGeometry(2.35, 3.1, 0.12), rainyGlass, [0, 0.75, 0.18]),
     mesh(new THREE.SphereGeometry(0.13, 12, 8), brass, [-0.95, -1.2, 0.28])
   );
@@ -145,10 +145,10 @@ function createBarInterior(scene: THREE.Scene) {
   for (const x of [-6, 0, 6]) {
     scene.add(
       mesh(new THREE.CylinderGeometry(0.04, 0.04, 3.6, 8), brass, [x, 7.2, -2.4]),
-      mesh(new THREE.CylinderGeometry(0.55, 0.82, 0.6, 20, 1, true), material(0x91613d, 0.3, 0.38), [x, 5.3, -2.4]),
-      mesh(new THREE.SphereGeometry(0.18, 14, 10), new THREE.MeshBasicMaterial({ color: 0xffd58a }), [x, 5.1, -2.4])
+      mesh(new THREE.CylinderGeometry(0.55, 0.82, 0.6, 8, 1, true), material(0xef7880, 0.8), [x, 5.3, -2.4]),
+      mesh(new THREE.BoxGeometry(0.3, 0.3, 0.3), new THREE.MeshBasicMaterial({ color: 0xffe2a6 }), [x, 5.1, -2.4])
     );
-    const light = new THREE.PointLight(0xffad5a, 46, 11, 1.55);
+    const light = new THREE.PointLight(0xffb36f, 42, 11, 1.55);
     light.position.set(x, 4.8, -2.4);
     scene.add(light);
   }
@@ -156,16 +156,16 @@ function createBarInterior(scene: THREE.Scene) {
 
 function createAvatar(user: PublicUser, self: boolean) {
   const group = new THREE.Group();
-  const body = mesh(new THREE.CapsuleGeometry(0.42, 0.72, 5, 10), material(avatarColors[user.avatar], 0.68), [0, 1.25, 0]);
+  const body = mesh(new THREE.BoxGeometry(0.82, 1.15, 0.64), material(avatarColors[user.avatar], 0.9), [0, 1.2, 0]);
   body.name = 'body';
   group.add(
     body,
-    mesh(new THREE.SphereGeometry(0.38, 18, 12), material(0xbc846a, 0.82), [0, 2.2, 0]),
-    mesh(new THREE.SphereGeometry(0.395, 18, 8, 0, Math.PI * 2, 0, Math.PI * 0.48), material(0x34262a, 0.9), [0, 2.29, -0.02]),
-    mesh(new THREE.CylinderGeometry(0.11, 0.09, 0.32, 12), new THREE.MeshPhysicalMaterial({ color: 0xf2c27f, roughness: 0.12, transmission: 0.32, transparent: true, opacity: 0.9 }), [0.55, 1.45, 0.03])
+    mesh(new THREE.BoxGeometry(0.68, 0.68, 0.66), material(0xffc59f, 0.9), [0, 2.12, 0]),
+    mesh(new THREE.BoxGeometry(0.72, 0.25, 0.7), material(0x234757, 0.95), [0, 2.4, -0.02]),
+    mesh(new THREE.BoxGeometry(0.2, 0.34, 0.2), material(0xffdc8c, 0.8), [0.55, 1.42, 0.03])
   );
   if (self) {
-    const ring = mesh(new THREE.RingGeometry(0.65, 0.74, 28), new THREE.MeshBasicMaterial({ color: 0xf0c477, side: THREE.DoubleSide, transparent: true, opacity: 0.9 }), [0, 0.035, 0], [-Math.PI / 2, 0, 0]);
+    const ring = mesh(new THREE.RingGeometry(0.65, 0.76, 16), new THREE.MeshBasicMaterial({ color: 0xffe49f, side: THREE.DoubleSide, transparent: true, opacity: 0.95 }), [0, 0.035, 0], [-Math.PI / 2, 0, 0]);
     ring.name = 'self-ring';
     group.add(ring);
   }
@@ -203,29 +203,29 @@ export function BarScene({ users, selfId, onMove }: Props) {
     const compact = container.clientWidth < 720;
     let renderer: THREE.WebGLRenderer;
     try {
-      renderer = new THREE.WebGLRenderer({ antialias: !compact, powerPreference: compact ? 'low-power' : 'high-performance' });
+      renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: compact ? 'low-power' : 'high-performance' });
     } catch {
       setFailed(true);
       return;
     }
-    renderer.setPixelRatio(compact ? 1 : Math.min(window.devicePixelRatio, 1.35));
-    renderer.setSize(container.clientWidth, container.clientHeight, false);
+    renderer.setPixelRatio(1);
+    const pixelScale = compact ? 0.48 : 0.58;
+    renderer.setSize(Math.round(container.clientWidth * pixelScale), Math.round(container.clientHeight * pixelScale), false);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.42;
+    renderer.toneMapping = THREE.NoToneMapping;
     renderer.domElement.dataset.renderer = 'three-webgl';
     renderer.domElement.setAttribute('aria-hidden', 'true');
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0a101c);
-    scene.fog = new THREE.FogExp2(0x0a101c, 0.026);
+    scene.background = new THREE.Color(0x123f50);
+    scene.fog = new THREE.FogExp2(0x123f50, 0.022);
     sceneRef.current = scene;
     createBarInterior(scene);
-    scene.add(new THREE.HemisphereLight(0x7087a7, 0x38201d, 3.2));
-    scene.add(new THREE.AmbientLight(0xffd5ad, 0.42));
-    const moonlight = new THREE.DirectionalLight(0x7ba4d1, 2.1);
+    scene.add(new THREE.HemisphereLight(0x8ee0d3, 0x7f455e, 2.6));
+    scene.add(new THREE.AmbientLight(0xffd7ad, 0.72));
+    const moonlight = new THREE.DirectionalLight(0x79d1cc, 1.6);
     moonlight.position.set(-8, 10, -5);
     scene.add(moonlight);
 
@@ -254,7 +254,7 @@ export function BarScene({ users, selfId, onMove }: Props) {
       if (!entry) return;
       const { width, height } = entry.contentRect;
       if (!width || !height) return;
-      renderer.setSize(width, height, false);
+      renderer.setSize(Math.round(width * pixelScale), Math.round(height * pixelScale), false);
       camera.aspect = width / height;
       if (width < 720) {
         camera.fov = 65;

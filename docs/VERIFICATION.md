@@ -48,6 +48,8 @@
 | Lighthouse | Performance 86, Accessibility 100, Best Practices 96, SEO 91 |
 | Web Vitals 측정 | LCP 3.6초, CLS 0, TBT 40ms |
 
+2026-11-05 픽셀 아트 리뉴얼 후 재측정은 Performance 78, Accessibility 100, Best Practices 93, SEO 91이며 원본은 `artifacts/lighthouse-renewal.json`에 있다. 새 랜딩의 LCP는 4.8초, CLS는 0, TBT는 10ms다.
+
 Lighthouse 원본은 `artifacts/lighthouse.json`에 있다. 3D 장면은 지연 로딩해 랜딩 초기 로드와 분리한다.
 
 ## Acceptance Criteria 근거
@@ -75,6 +77,9 @@ Lighthouse 원본은 `artifacts/lighthouse.json`에 있다. 3D 장면은 지연 
 - `artifacts/screenshots/landing-mobile.png`
 - `artifacts/screenshots/bar-mobile.png`
 - `artifacts/screenshots/bar-desktop-multiplayer.png`
+- `artifacts/screenshots/renewal-landing-desktop.png`
+- `artifacts/screenshots/renewal-onboarding-desktop.png`
+- `artifacts/screenshots/renewal-bar-desktop.png`
 
 세 화면을 원본 해상도로 직접 확인했다. 모바일에서 가로 잘림 없이 CTA, 좌석, 접이식 채팅, 반응, 입력을 사용할 수 있고, 데스크톱에서는 세 실제 client의 위치와 분리된 채팅을 확인했다.
 

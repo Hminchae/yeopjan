@@ -17,7 +17,7 @@ tests/
 docs/          제품, 아키텍처, 계획, 운영·법적 검토
 ```
 
-pnpm workspace와 TypeScript strict mode를 사용한다. 핵심 의존성은 React, Vite, Three.js, Fastify, Socket.IO, Zod, SQLite 드라이버, Vitest, Playwright다. UI는 코드 기반 3D 지오메트리·재질·파티클로 그려 외부 게임 그래픽을 복제하지 않는다.
+pnpm workspace와 TypeScript strict mode를 사용한다. 핵심 의존성은 React, Vite, Three.js, Fastify, Socket.IO, Zod, SQLite 드라이버, Vitest, Playwright다. 바 내부는 코드 기반 로우폴리 지오메트리·재질·파티클을 낮은 내부 해상도로 렌더링해 16비트 픽셀 디오라마처럼 보이게 한다. 랜딩 외관은 프로젝트 전용 생성 에셋이며 외부 게임 그래픽을 복제하지 않는다.
 
 ## 런타임
 

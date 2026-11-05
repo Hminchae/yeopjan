@@ -25,7 +25,7 @@ type Phase = 'landing' | 'onboarding' | 'bar';
 interface Profile { nickname: string; avatar: AvatarStyle; mood: Mood | null; adultConfirmed: true }
 const profileKey = 'yeopjan.profile';
 const avatarColors: Record<AvatarStyle, string> = {
-  amber: '#d99a4c', burgundy: '#934b55', navy: '#536b88', sage: '#73816b', plum: '#76566f', copper: '#a96843'
+  amber: '#ffc66d', burgundy: '#e86f7a', navy: '#397b92', sage: '#69c6ac', plum: '#a76a91', copper: '#ef8b68'
 };
 const channelLabels: Record<Channel, string> = { counter: '바 카운터', 'table-1': '작은 테이블 하나', 'table-2': '작은 테이블 둘' };
 const sceneScreenTop = (y: number) => y * 0.75 + 21;
