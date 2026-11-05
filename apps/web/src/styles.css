@@ -20,9 +20,9 @@ button:disabled { cursor:not-allowed; filter:saturate(.35); opacity:.48; }
 .landing-scrim { position:absolute; inset:0; background:linear-gradient(90deg,rgba(8,47,61,.97),rgba(8,47,61,.88) 31%,rgba(8,47,61,.24) 64%,rgba(8,47,61,.04)),linear-gradient(0deg,rgba(8,47,61,.7),transparent 42%); }
 .brand { position:absolute; z-index:2; top:28px; left:clamp(24px,6vw,88px); display:flex; align-items:center; gap:12px; color:var(--mint); font-size:11px; font-weight:800; letter-spacing:.18em; text-shadow:2px 2px 0 var(--deep); }
 .brand-mark { color:var(--cream); font-size:25px; font-weight:900; letter-spacing:-.08em; }
-.hero-copy { position:relative; z-index:1; display:flex; width:min(680px,56vw); min-height:100dvh; padding:110px clamp(24px,6vw,88px) 88px; flex-direction:column; justify-content:center; align-items:flex-start; }
+.hero-copy { position:relative; z-index:1; display:flex; width:min(760px,64vw); min-height:100dvh; padding:110px 0 88px clamp(24px,6vw,88px); flex-direction:column; justify-content:center; align-items:flex-start; }
 .eyebrow { width:max-content; margin:0 0 22px; padding:6px 9px; color:var(--deep)!important; background:var(--gold); box-shadow:3px 3px 0 var(--coral-dark); font-size:10px; font-weight:900; letter-spacing:.15em; }
-.hero-copy h1 { margin:0; max-width:640px; color:var(--cream); font-size:clamp(38px,5vw,68px); line-height:1.14; letter-spacing:-.07em; text-shadow:4px 4px 0 var(--deep); text-wrap:balance; }
+.hero-copy h1 { margin:0; max-width:640px; color:var(--cream); font-size:clamp(38px,5vw,68px); line-height:1.14; letter-spacing:-.035em; word-spacing:.12em; text-shadow:4px 4px 0 var(--deep); text-wrap:balance; }
 .hero-sub { margin:23px 0 20px; color:#b8e1d5; font-size:clamp(15px,2vw,20px); font-weight:700; }
 .presence { display:flex; margin-bottom:28px; padding:6px 9px; align-items:center; gap:9px; border:2px solid rgba(105,203,193,.55); color:var(--cream); background:rgba(16,63,80,.78); font-size:12px; }
 .live-dot,.offline-dot { display:inline-block; width:9px; height:9px; background:#8de0a5; box-shadow:2px 2px 0 var(--deep); }
