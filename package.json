@@ -1,0 +1,24 @@
+{
+  "name": "yeopjan",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.9.0",
+  "scripts": {
+    "build": "pnpm --filter @yeopjan/shared build && pnpm --filter @yeopjan/web build && pnpm --filter @yeopjan/server build",
+    "dev": "pnpm --parallel --filter @yeopjan/server --filter @yeopjan/web dev",
+    "lint": "eslint .",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r --if-present test:unit",
+    "test:integration": "pnpm --filter @yeopjan/server test:integration",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.0",
+    "@playwright/test": "^1.56.1",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.3"
+  }
+}
