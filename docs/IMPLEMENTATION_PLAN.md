@@ -22,7 +22,7 @@ workspace, strict TypeScript, lint, Vitest, Vite/Fastify를 세운다. 실제 pr
 
 ### 공간과 서버 권위 좌석
 
-Phaser 바 장면, DOM 좌석 접근성 레이어, 터치 이동, 아바타 보간, 서버 권위 좌석 할당과 음료 상태를 구현한다.
+Three.js 3D 바 장면, DOM 좌석 접근성·주종 이모지 레이어, 터치 이동, 3D 아바타 보간, 서버 권위 좌석 할당과 음료 상태를 구현한다.
 
 검증: AC-02, AC-04, AC-07, 모바일 터치, reduced-motion.
 

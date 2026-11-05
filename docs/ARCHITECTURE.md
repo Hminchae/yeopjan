@@ -9,7 +9,7 @@
 ```text
 apps/
   server/      Fastify, Socket.IO, SQLite, 운영자 API
-  web/         React, Vite, Phaser 장면, 모바일 UI
+  web/         React, Vite, Three.js 장면, 모바일 UI
 packages/
   shared/      Zod 스키마, 이벤트와 도메인 타입, 좌석 정의
 tests/
@@ -17,12 +17,12 @@ tests/
 docs/          제품, 아키텍처, 계획, 운영·법적 검토
 ```
 
-pnpm workspace와 TypeScript strict mode를 사용한다. 새 의존성은 React, Vite, Phaser, Fastify, Socket.IO, Zod, SQLite 드라이버, Vitest, Playwright에 한정한다. UI는 코드 기반 도형·타일·파티클로 그려 외부 게임 그래픽을 복제하지 않는다.
+pnpm workspace와 TypeScript strict mode를 사용한다. 핵심 의존성은 React, Vite, Three.js, Fastify, Socket.IO, Zod, SQLite 드라이버, Vitest, Playwright다. UI는 코드 기반 3D 지오메트리·재질·파티클로 그려 외부 게임 그래픽을 복제하지 않는다.
 
 ## 런타임
 
 ```text
-React UI <-> scene adapter <-> Phaser scene
+React UI <-> scene adapter <-> Three.js WebGL scene
     |                           |
     +------- socket client -----+
                  |

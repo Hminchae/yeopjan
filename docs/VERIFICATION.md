@@ -1,6 +1,6 @@
 # 검증 기록
 
-검증일: 2026-11-04, Asia/Seoul
+검증일: 2026-11-05, Asia/Seoul
 
 ## Checkpoint 결과
 
@@ -8,11 +8,11 @@
 
 - 생성: `docs/PRODUCT.md`, `docs/ARCHITECTURE.md`, `docs/IMPLEMENTATION_PLAN.md`, `docs/SECURITY.md`
 - 확인: Node 25.6.1, pnpm 11.9.0, Docker 28.4.0, Compose 2.39.4
-- 결정: 단일 Fastify + Socket.IO 권위 서버, React/Vite/Phaser 클라이언트, 공유 Zod 계약, SQLite 운영 자료
+- 결정: 단일 Fastify + Socket.IO 권위 서버, React/Vite/Three.js 클라이언트, 공유 Zod 계약, SQLite 운영 자료
 
 ### Single User Experience
 
-- 생성: 랜딩, 성인 안내, 온보딩, Phaser 바, DOM 좌석·아바타, 음료, 건배·반응, 기본 OFF 빗소리
+- 생성: 랜딩, 성인 안내, 온보딩, Three.js 3D 바, DOM 좌석·주종 이모지, 음료, 건배·반응, 기본 OFF 빗소리
 - 확인: Playwright Pixel 7 터치 여정, 모바일 스크린샷, reduced-motion CSS
 
 ### Real Multiplayer
@@ -36,7 +36,7 @@
 |---|---|
 | `pnpm typecheck` | 3 workspace 통과 |
 | `pnpm lint` | 오류 0 |
-| `pnpm test` | 단위 7개 통과 |
+| `pnpm test` | 단위 8개 통과 |
 | `pnpm test:integration` | 실제 네트워크 멀티클라이언트 3개 통과 |
 | `pnpm build` | shared, web, server production build 통과 |
 | `pnpm test:e2e` | Chromium 3개 통과 |
@@ -45,17 +45,17 @@
 | Docker Compose | 이미지 빌드, container healthy, `/health` 200 |
 | Docker 정적 파일 | Vite JS 200, 인코딩된 traversal 요청 404 |
 | Docker Socket.IO | polling handshake 성공, `maxPayload` 16384 |
-| Lighthouse | Performance 100, Accessibility 100, Best Practices 96, SEO 91 |
-| Web Vitals 측정 | LCP 0.8초, CLS 0, TBT 0ms |
+| Lighthouse | Performance 86, Accessibility 100, Best Practices 96, SEO 91 |
+| Web Vitals 측정 | LCP 3.6초, CLS 0, TBT 40ms |
 
-Lighthouse 원본은 `artifacts/lighthouse.json`에 있다. 빌드 시 지연 로딩된 Phaser chunk가 1.21MB라는 경고가 남지만 초기 랜딩 JS는 370KB 미만이며 Lighthouse LCP는 목표 2.5초 안이다.
+Lighthouse 원본은 `artifacts/lighthouse.json`에 있다. 3D 장면은 지연 로딩해 랜딩 초기 로드와 분리한다.
 
 ## Acceptance Criteria 근거
 
 | AC | 상태 | 근거 |
 |---|---|---|
 | AC-01 | PASS | `mobile.spec.ts`가 가입 없이 닉네임·아바타·성인 확인 후 입장 |
-| AC-02 | PASS | Phaser 장면과 DOM 좌석, 모바일 `tap()` 착석 후 서버 확정 `data-seat` |
+| AC-02 | PASS | Three.js WebGL 장면과 DOM 좌석, 모바일 `tap()` 착석 후 서버 확정 `data-seat` |
 | AC-03 | PASS | `multiplayer.spec.ts`의 격리 context A/B가 서로의 닉네임 아바타 확인 |
 | AC-04 | PASS | A/B 동시 좌석 요청 후 B 화면에서 서버 확정 좌석 아바타가 하나임을 확인 |
 | AC-05 | PASS | 같은 카운터의 송신자·수신자 양쪽에 같은 메시지 표시 |

@@ -23,7 +23,7 @@ button:active { transform: translateY(1px); }
 button:disabled { cursor: not-allowed; opacity: 0.48; }
 
 .landing { position: relative; min-height: 100dvh; overflow: hidden; background: var(--navy); }
-.landing-image { position: absolute; inset: 0; background: url('/assets/yeopjan-exterior.png') center / cover no-repeat; transform: scale(1.01); }
+.landing-image { position: absolute; inset: 0; background: url('/assets/yeopjan-exterior.webp') center / cover no-repeat; transform: scale(1.01); }
 .landing-scrim { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(9, 15, 28, 0.96) 0%, rgba(9, 15, 28, 0.76) 35%, rgba(9, 15, 28, 0.1) 76%), linear-gradient(0deg, rgba(9, 15, 28, 0.72), transparent 48%); }
 .brand { position: absolute; top: 28px; left: clamp(24px, 6vw, 88px); display: flex; align-items: baseline; gap: 12px; z-index: 2; font-size: 11px; letter-spacing: 0.2em; color: rgba(243, 234, 216, 0.72); }
 .brand-mark { color: var(--ivory); font-size: 24px; font-weight: 800; letter-spacing: -0.06em; }
@@ -69,23 +69,24 @@ button:disabled { cursor: not-allowed; opacity: 0.48; }
 .bar-header button { min-height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; color: #e9dcc6; background: rgba(255, 255, 255, 0.04); }
 .bar-header .sound-button[aria-pressed='true'] { border-color: var(--amber); color: var(--amber-light); }
 .scene-shell { position: relative; width: calc(100vw - 355px); height: calc(100dvh - 62px); overflow: hidden; background: #101522; touch-action: manipulation; }
-.bar-canvas, .bar-canvas canvas { width: 100% !important; height: 100% !important; object-fit: cover; }
+.bar-canvas, .bar-canvas canvas { width: 100% !important; height: 100% !important; }
+.bar-canvas { position: absolute; inset: 0; }
+.bar-canvas canvas { display: block; touch-action: manipulation; }
 .scene-loading { display: grid; width: 100%; height: 100%; place-items: center; color: rgba(243, 234, 216, 0.72); background: #101522; }
-.scene-vignette { position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 90px rgba(0, 0, 0, 0.56); }
+.scene-vignette { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(5, 8, 14, 0.08), transparent 38%, rgba(5, 8, 14, 0.24)); box-shadow: inset 0 0 110px rgba(0, 0, 0, 0.48); }
 .seat-layer, .avatar-layer { position: absolute; inset: 0; pointer-events: none; }
 .seat-target { position: absolute; width: 42px; height: 34px; margin: -17px 0 0 -21px; border: 1px solid rgba(240, 196, 119, 0.32); border-radius: 50%; color: transparent; background: rgba(240, 196, 119, 0.06); pointer-events: auto; transition: background 150ms ease, transform 150ms ease; }
 .seat-target span { position: absolute; bottom: 40px; left: 50%; padding: 5px 8px; border-radius: 6px; color: #17130f; background: var(--amber-light); font-size: 11px; font-weight: 800; opacity: 0; transform: translateX(-50%); white-space: nowrap; }
 .seat-target:hover, .seat-target:focus-visible { background: rgba(240, 196, 119, 0.3); }
 .seat-target:hover span, .seat-target:focus-visible span { opacity: 1; }
 .seat-target.occupied { border-color: rgba(243, 234, 216, 0.12); background: rgba(0, 0, 0, 0.18); }
-.guest-avatar { position: absolute; width: 76px; min-height: 86px; margin: -65px 0 0 -38px; padding: 0; border: 0; color: var(--ivory); background: transparent; pointer-events: auto; transition: left 700ms cubic-bezier(.2,.8,.2,1), top 700ms cubic-bezier(.2,.8,.2,1), opacity 200ms; }
+.guest-avatar { position: absolute; width: 96px; min-height: 68px; margin: -88px 0 0 -48px; padding: 0; border: 0; color: var(--ivory); background: transparent; pointer-events: auto; transition: left 700ms cubic-bezier(.2,.8,.2,1), top 700ms cubic-bezier(.2,.8,.2,1), opacity 200ms; }
 .guest-avatar.away { opacity: 0.38; }
-.guest-name { display: block; width: max-content; max-width: 120px; margin: 0 auto 5px; padding: 3px 7px; border-radius: 5px; overflow: hidden; color: #f7edda; background: rgba(9, 12, 19, 0.82); font-size: 11px; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
-.pixel-person { position: relative; display: block; width: 32px; height: 44px; margin: auto; filter: drop-shadow(0 7px 4px rgba(0, 0, 0, 0.4)); }
-.pixel-person .head { position: absolute; top: 0; left: 7px; width: 19px; height: 19px; border-radius: 7px 7px 5px 5px; background: #bd886b; box-shadow: inset -5px 0 rgba(70, 45, 38, 0.22); }
-.pixel-person .body { position: absolute; top: 17px; left: 3px; width: 27px; height: 27px; border-radius: 8px 8px 5px 5px; background: var(--avatar); box-shadow: inset -7px 0 rgba(0, 0, 0, 0.16); }
-.guest-avatar.self .pixel-person { outline: 2px solid var(--amber-light); outline-offset: 5px; border-radius: 10px; }
-.guest-status { display: block; width: max-content; max-width: 120px; margin: 3px auto 0; color: rgba(243, 234, 216, 0.75); font-size: 9px; white-space: nowrap; }
+.drink-bubble { position: relative; display: grid; width: 38px; height: 33px; margin: 0 auto 6px; place-items: center; border: 1px solid rgba(243, 234, 216, 0.3); border-radius: 12px; background: rgba(12, 17, 28, 0.9); box-shadow: 0 7px 22px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.12); font-size: 20px; line-height: 1; }
+.drink-bubble::after { position: absolute; bottom: -5px; left: calc(50% - 4px); width: 8px; height: 8px; border-right: 1px solid rgba(243, 234, 216, 0.3); border-bottom: 1px solid rgba(243, 234, 216, 0.3); background: rgba(12, 17, 28, 0.9); content: ''; transform: rotate(45deg); }
+.guest-name { display: block; width: max-content; max-width: 132px; margin: 0 auto; padding: 4px 8px; border-radius: 6px; overflow: hidden; color: #f7edda; background: rgba(9, 12, 19, 0.86); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28); font-size: 11px; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
+.guest-avatar.self .guest-name { outline: 1px solid rgba(240, 196, 119, 0.78); outline-offset: 1px; }
+.guest-status { display: block; width: max-content; max-width: 132px; margin: 4px auto 0; padding: 2px 5px; border-radius: 4px; color: rgba(243, 234, 216, 0.74); background: rgba(9, 12, 19, 0.66); font-size: 9px; white-space: nowrap; }
 .area-label { position: absolute; padding: 5px 8px; border-radius: 5px; color: rgba(243, 234, 216, 0.62); background: rgba(10, 13, 21, 0.58); font-size: 10px; letter-spacing: 0.04em; pointer-events: none; }
 .window-label { left: 10%; top: 10%; }.counter-label { left: 48%; top: 36%; }.table-one-label { left: 22%; top: 83%; }.table-two-label { left: 65%; top: 83%; }
 .move-hint { position: absolute; bottom: 16px; left: 50%; margin: 0; padding: 7px 10px; border-radius: 6px; color: rgba(243, 234, 216, 0.7); background: rgba(9, 12, 19, 0.72); font-size: 11px; transform: translateX(-50%); pointer-events: none; }
@@ -110,6 +111,7 @@ button:disabled { cursor: not-allowed; opacity: 0.48; }
 .drink-menu, .guest-menu { position: fixed; z-index: 5; display: grid; gap: 7px; padding: 16px; border: 1px solid var(--line); border-radius: 10px; background: #171c28; box-shadow: 0 22px 60px rgba(0, 0, 0, 0.5); }
 .drink-menu { top: 56px; right: 350px; width: 210px; }.guest-menu { top: 50%; left: calc((100vw - 355px) / 2); width: 230px; transform: translate(-50%, -50%); }
 .drink-menu strong, .guest-menu strong { padding: 5px; }.drink-menu button, .guest-menu button { min-height: 40px; padding: 0 11px; border: 1px solid var(--line); border-radius: 7px; color: #ebdeca; background: rgba(255, 255, 255, 0.04); text-align: left; }
+.drink-menu button { display: flex; align-items: center; gap: 10px; }.drink-menu button span { font-size: 19px; }
 .drink-menu button[aria-pressed='true'] { border-color: var(--amber); color: var(--amber-light); }.guest-menu .danger { color: #ffb7b7; }.guest-menu .close { color: rgba(243, 234, 216, 0.55); }
 .toast { position: fixed; z-index: 10; top: 78px; left: calc((100vw - 355px) / 2); padding: 10px 15px; border: 1px solid rgba(240, 196, 119, 0.4); border-radius: 8px; color: var(--ivory); background: #25202a; transform: translateX(-50%); box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35); }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
@@ -127,7 +129,7 @@ button:disabled { cursor: not-allowed; opacity: 0.48; }
   .onboarding { margin-top: 28px; gap: 22px; }
   .bar-header { height: 54px; padding: 0 10px; }.bar-header .brand-mark { font-size: 20px; }.bar-header button { min-height: 38px; padding: 0 8px; font-size: 11px; }
   .scene-shell { width: 100vw; height: calc(100dvh - 54px); padding-bottom: 62px; }
-  .bar-canvas canvas { object-fit: cover; object-position: center; }
+  .my-drink-button { max-width: 126px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .chat-panel { top: auto; width: 100%; max-height: min(54dvh, 480px); grid-template-rows: auto minmax(100px, 1fr) auto auto; border-top: 1px solid var(--line); border-left: 0; }
   .chat-panel.collapsed { bottom: 0; height: 54px; }
   .messages { padding: 13px 16px; }
@@ -141,7 +143,7 @@ button:disabled { cursor: not-allowed; opacity: 0.48; }
 @media (prefers-reduced-motion: no-preference) {
   .landing-image { animation: landing-breathe 16s ease-in-out infinite alternate; }
   .live-dot { animation: live-pulse 2.4s ease-in-out infinite; }
-  .pixel-person { animation: idle 2.8s ease-in-out infinite; }
+  .drink-bubble { animation: idle 2.8s ease-in-out infinite; }
   .toast { animation: toast-in 180ms ease-out; }
 }
 @keyframes landing-breathe { to { transform: scale(1.035); } }

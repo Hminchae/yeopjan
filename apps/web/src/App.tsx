@@ -1,6 +1,7 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import {
   avatars,
+  drinkEmojis,
   drinkLabels,
   drinks,
   moodLabels,
@@ -27,6 +28,7 @@ const avatarColors: Record<AvatarStyle, string> = {
   amber: '#d99a4c', burgundy: '#934b55', navy: '#536b88', sage: '#73816b', plum: '#76566f', copper: '#a96843'
 };
 const channelLabels: Record<Channel, string> = { counter: '바 카운터', 'table-1': '작은 테이블 하나', 'table-2': '작은 테이블 둘' };
+const sceneScreenTop = (y: number) => y * 0.75 + 21;
 
 function randomNickname() {
   const first = ['고요한', '느린', '밤의', '따뜻한', '작은', '비오는'];
@@ -43,7 +45,7 @@ function Landing({ count, connected, onEnter }: { count: number; connected: bool
       <p className="eyebrow">ANONYMOUS MIDNIGHT BAR</p>
       <h1>혼자 마시고 싶지만,<br />혼자 있고 싶지는 않은 밤.</h1>
       <p className="hero-sub">오늘 밤, 당신 옆자리는 비어 있어요.</p>
-      <div className="presence" aria-live="polite"><span className={connected ? 'live-dot' : 'offline-dot'} /> 지금 {count}명이 머무는 중</div>
+      <div className="presence" aria-live="polite"><span className={connected ? 'live-dot' : 'offline-dot'} /><span>지금 <strong>{count}</strong>명이 머무는 중</span></div>
       <button className="primary" onClick={onEnter}>바에 입장하기</button>
     </section>
     <aside className="landing-note">
@@ -85,15 +87,16 @@ function UserAvatar({ user, self, muted, onSelect }: { user: PublicUser; self: b
   const status = user.seatId?.startsWith('window-') ? '조용히 쉬는 중' : user.mood ? moodLabels[user.mood] : '';
   return <button
     className={`guest-avatar ${self ? 'self' : ''} ${user.connected ? '' : 'away'}`}
-    style={{ left: `${user.x}%`, top: `${user.y}%`, '--avatar': avatarColors[user.avatar] } as React.CSSProperties}
+    style={{ left: `${user.x}%`, top: `${sceneScreenTop(user.y)}%`, '--avatar': avatarColors[user.avatar] } as React.CSSProperties}
     onClick={(event) => { event.stopPropagation(); onSelect(); }}
     data-testid={`avatar-${user.id}`}
     data-seat={user.seatId ?? ''}
-    aria-label={`${user.nickname}${self ? ', 나' : ''}${muted ? ', 음소거됨' : ''}`}
+    data-drink={user.drink}
+    aria-label={`${user.nickname}${self ? ', 나' : ''}, ${drinkLabels[user.drink]}${muted ? ', 음소거됨' : ''}`}
   >
+    <span className="drink-bubble" aria-label={`선택한 주종: ${drinkLabels[user.drink]}`}>{drinkEmojis[user.drink]}</span>
     <span className="guest-name">{user.nickname}{self && ' (나)'}</span>
-    <span className="pixel-person"><i className="head" /><i className="body" /></span>
-    <span className="guest-status">{status}{user.drink && ` · ${drinkLabels[user.drink]}`}</span>
+    <span className="guest-status">{status || drinkLabels[user.drink]}</span>
   </button>;
 }
 
@@ -145,15 +148,15 @@ function Bar({ snapshot, messages, notice, muted, onMove, onSeat, onDrink, onCha
   const selectedUser = snapshot.users.find((user) => user.id === selected && user.id !== snapshot.selfId);
   const visibleMessages = messages.filter((message) => !muted.has(message.authorId));
   return <main className="bar-app">
-    <header className="bar-header"><div><span className="brand-mark">옆잔</span><span className="live-dot" /> {snapshot.connectedCount}명</div><div><button className="sound-button" aria-label={soundOn ? '빗소리 끄기' : '빗소리 켜기'} aria-pressed={soundOn} onClick={toggleSound}>소리</button><button onClick={() => setDrinksOpen(!drinksOpen)}>내 잔: {self ? drinkLabels[self.drink] : '준비 중'}</button><button onClick={onLeave}>나가기</button></div></header>
+    <header className="bar-header"><div><span className="brand-mark">옆잔</span><span className="live-dot" /> {snapshot.connectedCount}명</div><div><button className="sound-button" aria-label={soundOn ? '빗소리 끄기' : '빗소리 켜기'} aria-pressed={soundOn} onClick={toggleSound}>소리</button><button className="my-drink-button" onClick={() => setDrinksOpen(!drinksOpen)}>내 잔: {self ? `${drinkEmojis[self.drink]} ${drinkLabels[self.drink]}` : '준비 중'}</button><button onClick={onLeave}>나가기</button></div></header>
     <section className="scene-shell" aria-label="옆잔 바 내부. 빈 자리나 바닥을 선택해 이동하세요.">
-      <Suspense fallback={<div className="scene-loading" role="status">바의 불을 켜는 중...</div>}><BarScene onMove={onMove} /></Suspense>
+      <Suspense fallback={<div className="scene-loading" role="status">3D 바의 불을 켜는 중...</div>}><BarScene users={snapshot.users} selfId={snapshot.selfId} onMove={onMove} /></Suspense>
       <div className="scene-vignette" />
       <div className="seat-layer" aria-label="좌석 선택">
         {seats.map((seat) => {
           const occupiedBy = snapshot.occupiedSeats[seat.id];
           const occupied = Boolean(occupiedBy && occupiedBy !== snapshot.selfId);
-          return <button key={seat.id} style={{ left: `${seat.x}%`, top: `${seat.y}%` }} className={`seat-target ${occupied ? 'occupied' : ''}`} disabled={occupied} onClick={(event) => { event.stopPropagation(); onSeat(seat.id); }} data-testid={`seat-${seat.id}`} aria-label={`${seat.label}${occupied ? ', 사용 중' : ', 비어 있음'}`}><span>{occupied ? '사용 중' : '앉기'}</span></button>;
+          return <button key={seat.id} style={{ left: `${seat.x}%`, top: `${sceneScreenTop(seat.y)}%` }} className={`seat-target ${occupied ? 'occupied' : ''}`} disabled={occupied} onClick={(event) => { event.stopPropagation(); onSeat(seat.id); }} data-testid={`seat-${seat.id}`} aria-label={`${seat.label}${occupied ? ', 사용 중' : ', 비어 있음'}`}><span>{occupied ? '사용 중' : '앉기'}</span></button>;
         })}
       </div>
       <div className="avatar-layer">
@@ -162,7 +165,7 @@ function Bar({ snapshot, messages, notice, muted, onMove, onSeat, onDrink, onCha
       <div className="area-label window-label">빗소리 창가</div><div className="area-label counter-label">바 카운터</div><div className="area-label table-one-label">작은 테이블 하나</div><div className="area-label table-two-label">작은 테이블 둘</div>
       <p className="move-hint">바닥을 탭하면 이동해요</p>
     </section>
-    {drinksOpen && <div className="drink-menu"><strong>오늘의 잔</strong>{drinks.map((drink) => <button key={drink} aria-pressed={self?.drink === drink} onClick={() => { onDrink(drink); setDrinksOpen(false); }}>{drinkLabels[drink]}</button>)}</div>}
+    {drinksOpen && <div className="drink-menu"><strong>오늘의 잔</strong>{drinks.map((drink) => <button key={drink} aria-pressed={self?.drink === drink} onClick={() => { onDrink(drink); setDrinksOpen(false); }}><span aria-hidden="true">{drinkEmojis[drink]}</span>{drinkLabels[drink]}</button>)}</div>}
     {selectedUser && <div className="guest-menu" role="dialog" aria-label={`${selectedUser.nickname} 메뉴`}><button className="close" onClick={() => setSelected(null)}>닫기</button><strong>{selectedUser.nickname}</strong><span>{selectedUser.mood ? moodLabels[selectedUser.mood] : '말없이 머무는 중'}</span><button onClick={() => onMute(selectedUser.id)}>{muted.has(selectedUser.id) ? '음소거 해제' : '음소거'}</button><button onClick={() => onBlock(selectedUser.id)}>차단 전환</button><button className="danger" onClick={() => onReport(selectedUser.id)}>신고하기</button></div>}
     {notice && <div className="toast" role="status">{notice}</div>}
     <ChatPanel channel={self?.channel ?? null} messages={visibleMessages} onSend={onChat} onCheers={onCheers} onReaction={onReaction} quiet={quiet} onToggle={() => setQuiet(!quiet)} />

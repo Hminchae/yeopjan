@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { joinSchema, messageSchema, seats } from './index.js';
+import { drinkEmojis, drinks, joinSchema, messageSchema, seats } from './index.js';
 
 describe('shared validation', () => {
   it('normalizes a valid guest and rejects underage confirmation omission', () => {
@@ -10,5 +10,10 @@ describe('shared validation', () => {
   it('limits messages and keeps seat identifiers unique', () => {
     expect(() => messageSchema.parse({ text: 'a'.repeat(301) })).toThrow();
     expect(new Set(seats.map((seat) => seat.id)).size).toBe(seats.length);
+  });
+
+  it('gives every drink a visible emoji', () => {
+    expect(Object.keys(drinkEmojis).sort()).toEqual([...drinks].sort());
+    expect(new Set(Object.values(drinkEmojis)).size).toBe(drinks.length);
   });
 });

@@ -140,6 +140,9 @@ export const moodLabels: Record<Mood, string> = {
 export const drinkLabels: Record<Drink, string> = {
   beer: '맥주', wine: '와인', highball: '하이볼', whiskey: '위스키', 'sparkling-water': '탄산수', mocktail: '무알코올 칵테일'
 };
+export const drinkEmojis: Record<Drink, string> = {
+  beer: '🍺', wine: '🍷', highball: '🍹', whiskey: '🥃', 'sparkling-water': '🥤', mocktail: '🍸'
+};
 export const reactionLabels: Record<Reaction, string> = {
   wave: '👋', cheers: '🍻', heart: '❤️', clap: '👏', moon: '🌙'
 };

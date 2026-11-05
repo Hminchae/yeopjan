@@ -5,7 +5,7 @@
 ## 구현 기능
 
 - 실제 접속 인원, 성인 대상 안내, 닉네임·아바타·기분 온보딩
-- Phaser로 그린 2D 바와 접근 가능한 DOM 좌석·아바타 레이어
+- Three.js로 렌더링한 3D 바, 조명·그림자·비 효과와 접근 가능한 DOM 좌석·주종 레이어
 - 터치·클릭 이동, 서버 권위 좌석 점유, 동시 요청 충돌 처리
 - 바 카운터와 테이블별 Socket.IO 채팅 격리, 창가 조용한 상태
 - 가상 음료, 건배 cooldown, 반응, 시스템 바텐더 질문
@@ -17,7 +17,7 @@
 ## 구조
 
 ```text
-apps/web       React, Vite, Phaser, Socket.IO client
+apps/web       React, Vite, Three.js, Socket.IO client
 apps/server    Fastify, Socket.IO, node:sqlite
 packages/shared  Zod 스키마, 이벤트 타입, 좌석 정의
 tests/e2e      Playwright 모바일·다중 브라우저 테스트
