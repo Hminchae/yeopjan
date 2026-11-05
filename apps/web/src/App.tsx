@@ -92,6 +92,8 @@ function UserAvatar({ user, self, muted, onSelect }: { user: PublicUser; self: b
     data-testid={`avatar-${user.id}`}
     data-seat={user.seatId ?? ''}
     data-drink={user.drink}
+    data-x={user.x}
+    data-y={user.y}
     aria-label={`${user.nickname}${self ? ', 나' : ''}, ${drinkLabels[user.drink]}${muted ? ', 음소거됨' : ''}`}
   >
     <span className="drink-bubble" aria-label={`선택한 주종: ${drinkLabels[user.drink]}`}>{drinkEmojis[user.drink]}</span>
@@ -145,11 +147,52 @@ function Bar({ snapshot, messages, notice, muted, onMove, onSeat, onDrink, onCha
     audioRef.current = context; setSoundOn(true);
   };
   const self = snapshot.users.find((user) => user.id === snapshot.selfId);
+  const keyboardPosition = useRef({ x: self?.x ?? 90, y: self?.y ?? 88 });
+  useEffect(() => {
+    if (self) keyboardPosition.current = { x: self.x, y: self.y };
+  }, [self]);
+  useEffect(() => {
+    const held = new Set<string>();
+    const arrows = new Set(['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']);
+    const isEditing = (target: EventTarget | null) => target instanceof HTMLElement && (
+      target.matches('input, textarea, select') || target.isContentEditable
+    );
+    const keydown = (event: KeyboardEvent) => {
+      if (!arrows.has(event.key) || isEditing(event.target) || selected || drinksOpen) return;
+      event.preventDefault();
+      held.add(event.key);
+    };
+    const keyup = (event: KeyboardEvent) => held.delete(event.key);
+    const blur = () => held.clear();
+    const timer = window.setInterval(() => {
+      if (!held.size || isEditing(document.activeElement) || selected || drinksOpen) return;
+      const dx = Number(held.has('ArrowRight')) - Number(held.has('ArrowLeft'));
+      const dy = Number(held.has('ArrowDown')) - Number(held.has('ArrowUp'));
+      if (!dx && !dy) return;
+      const current = keyboardPosition.current;
+      const next = {
+        x: Math.max(4, Math.min(96, current.x + dx * 2.5)),
+        y: Math.max(12, Math.min(92, current.y + dy * 2.5))
+      };
+      if (next.x === current.x && next.y === current.y) return;
+      keyboardPosition.current = next;
+      onMove(next.x, next.y);
+    }, 120);
+    window.addEventListener('keydown', keydown);
+    window.addEventListener('keyup', keyup);
+    window.addEventListener('blur', blur);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener('keydown', keydown);
+      window.removeEventListener('keyup', keyup);
+      window.removeEventListener('blur', blur);
+    };
+  }, [drinksOpen, onMove, selected]);
   const selectedUser = snapshot.users.find((user) => user.id === selected && user.id !== snapshot.selfId);
   const visibleMessages = messages.filter((message) => !muted.has(message.authorId));
   return <main className="bar-app">
     <header className="bar-header"><div><span className="brand-mark">옆잔</span><span className="live-dot" /> {snapshot.connectedCount}명</div><div><button className="sound-button" aria-label={soundOn ? '빗소리 끄기' : '빗소리 켜기'} aria-pressed={soundOn} onClick={toggleSound}>소리</button><button className="my-drink-button" onClick={() => setDrinksOpen(!drinksOpen)}>내 잔: {self ? `${drinkEmojis[self.drink]} ${drinkLabels[self.drink]}` : '준비 중'}</button><button onClick={onLeave}>나가기</button></div></header>
-    <section className="scene-shell" aria-label="옆잔 바 내부. 빈 자리나 바닥을 선택해 이동하세요.">
+    <section className="scene-shell" aria-label="옆잔 바 내부. 빈 자리나 바닥을 선택하거나 방향키로 이동하세요.">
       <Suspense fallback={<div className="scene-loading" role="status">3D 바의 불을 켜는 중...</div>}><BarScene users={snapshot.users} selfId={snapshot.selfId} onMove={onMove} /></Suspense>
       <div className="scene-vignette" />
       <div className="seat-layer" aria-label="좌석 선택">
@@ -163,7 +206,7 @@ function Bar({ snapshot, messages, notice, muted, onMove, onSeat, onDrink, onCha
         {snapshot.users.map((user) => <UserAvatar key={user.id} user={user} self={user.id === snapshot.selfId} muted={muted.has(user.id)} onSelect={() => setSelected(user.id)} />)}
       </div>
       <div className="area-label window-label">빗소리 창가</div><div className="area-label counter-label">바 카운터</div><div className="area-label table-one-label">작은 테이블 하나</div><div className="area-label table-two-label">작은 테이블 둘</div>
-      <p className="move-hint">바닥을 탭하면 이동해요</p>
+      <p className="move-hint">바닥을 탭하거나 방향키로 이동해요</p>
     </section>
     {drinksOpen && <div className="drink-menu"><strong>오늘의 잔</strong>{drinks.map((drink) => <button key={drink} aria-pressed={self?.drink === drink} onClick={() => { onDrink(drink); setDrinksOpen(false); }}><span aria-hidden="true">{drinkEmojis[drink]}</span>{drinkLabels[drink]}</button>)}</div>}
     {selectedUser && <div className="guest-menu" role="dialog" aria-label={`${selectedUser.nickname} 메뉴`}><button className="close" onClick={() => setSelected(null)}>닫기</button><strong>{selectedUser.nickname}</strong><span>{selectedUser.mood ? moodLabels[selectedUser.mood] : '말없이 머무는 중'}</span><button onClick={() => onMute(selectedUser.id)}>{muted.has(selectedUser.id) ? '음소거 해제' : '음소거'}</button><button onClick={() => onBlock(selectedUser.id)}>차단 전환</button><button className="danger" onClick={() => onReport(selectedUser.id)}>신고하기</button></div>}

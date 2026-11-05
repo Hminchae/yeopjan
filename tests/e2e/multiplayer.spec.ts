@@ -15,6 +15,11 @@ test('two isolated browsers see movement, chat, cheers, seat collision and clean
   await expect(b.getByRole('button', { name: /^밤산책A/ })).toBeVisible();
   await expect(a.locator('canvas[data-renderer="three-webgl"]')).toBeVisible();
 
+  await a.keyboard.down('ArrowLeft');
+  await a.waitForTimeout(300);
+  await a.keyboard.up('ArrowLeft');
+  await expect.poll(async () => Number(await b.getByRole('button', { name: /^밤산책A/ }).getAttribute('data-x'))).toBeLessThan(90);
+
   await a.getByRole('button', { name: /내 잔:/ }).click();
   await a.getByRole('button', { name: /위스키/ }).click();
   await expect(a.getByRole('button', { name: /밤산책A, 나/ })).toHaveAttribute('data-drink', 'whiskey');

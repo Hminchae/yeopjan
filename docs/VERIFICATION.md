@@ -13,7 +13,7 @@
 ### Single User Experience
 
 - 생성: 랜딩, 성인 안내, 온보딩, Three.js 3D 바, DOM 좌석·주종 이모지, 음료, 건배·반응, 기본 OFF 빗소리
-- 확인: Playwright Pixel 7 터치 여정, 모바일 스크린샷, reduced-motion CSS
+- 확인: Playwright Pixel 7 터치 여정, PC 방향키 이동과 상대 브라우저 동기화, 모바일 스크린샷, reduced-motion CSS
 
 ### Real Multiplayer
 

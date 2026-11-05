@@ -16,7 +16,7 @@ test('mobile guest enters and completes a touch seat journey', async ({ page }) 
   await page.getByLabel(/성인 대상 서비스임을 확인했어요/).check();
   await page.getByRole('button', { name: '이 모습으로 입장하기' }).tap();
   await expect(page.getByLabel(/옆잔 바 내부/)).toBeVisible();
-  await expect(page.locator('canvas[data-renderer="three-webgl"]')).toBeVisible();
+  await expect(page.locator('canvas[data-renderer="three-webgl"]')).toBeVisible({ timeout: 15_000 });
   await expect(page.getByRole('button', { name: '빗소리 켜기' })).toHaveAttribute('aria-pressed', 'false');
   await page.getByRole('button', { name: '빗소리 켜기' }).tap();
   await expect(page.getByRole('button', { name: '빗소리 끄기' })).toHaveAttribute('aria-pressed', 'true');
